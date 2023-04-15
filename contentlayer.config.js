@@ -65,7 +65,7 @@ export const Blog = defineDocumentType(() => ({
 }));
 
 export default makeSource({
-  contentDirPath: 'blogs',
+  contentDirPath: 'content',
   documentTypes: [Blog],
   mdx: {
     remarkPlugins: [remarkGfm],
