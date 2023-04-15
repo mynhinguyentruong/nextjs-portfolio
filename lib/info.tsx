@@ -5,7 +5,7 @@ export const avatar = me;
 export const about = () => {
   return (
     <>
-        Hey 🤘, I'm Nhi - currently looking for <span className="font-bold">open source projects</span> where I can help build a better future for web development.
+        Hey 🤘, I'm Nhii - currently looking for <span className="font-bold">open source projects</span> where I can help build a better future for web development.
     </>
   );
 };
