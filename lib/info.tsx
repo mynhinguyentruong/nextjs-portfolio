@@ -12,7 +12,7 @@ export const about = () => {
 export const bio = () => {
   return (
     <>
-        When I'm not coding, I'm probably dancing to Kpop or walking with my dog. I also love to travel and explore new places.
+        When I'm not coding, I'm probably dancing to K-pop or walking with my dog. I also love to travel and explore new places.
     </>
   );
 };
