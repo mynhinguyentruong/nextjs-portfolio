@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Mdx } from 'components/mdx';
 import { allBlogs } from 'contentlayer/generated';
-import { getTweets } from 'lib/twitter';
 import Balancer from 'react-wrap-balancer';
 import ViewCounter from '../view-counter';
 
@@ -29,8 +28,8 @@ export async function generateMetadata({
     slug,
   } = post;
   const ogImage = image
-    ? `https://leerob.io${image}`
-    : `https://leerob.io/api/og?title=${title}`;
+    ? `https://nextjs-portfolio-ymihn-nhi.vercel.app/${image}`
+    : `https://nextjs-portfolio-ymihn-nhi.vercel.app/${title}`;
 
   return {
     title,
@@ -40,7 +39,7 @@ export async function generateMetadata({
       description,
       type: 'article',
       publishedTime,
-      url: `https://leerob.io/blog/${slug}`,
+      url: `https://nextjs-portfolio-ymihn-nhi.vercel.app/blog/${slug}`,
       images: [
         {
           url: ogImage,
@@ -58,6 +57,7 @@ export async function generateMetadata({
 
 export default async function Blog({ params }) {
   const post = allBlogs.find((post) => post.slug === params.slug);
+  console.log("find the right blog in /blog/[slug]")
   console.log({post})
   if (!post) {
     notFound();
@@ -78,7 +78,7 @@ export default async function Blog({ params }) {
         <div className="h-[0.2em] bg-neutral-50 dark:bg-neutral-800 mx-2" />
         <ViewCounter slug={post.slug} trackView />
       </div>
-
+      <Mdx code={post.body.code} />
     </section>
   );
 }

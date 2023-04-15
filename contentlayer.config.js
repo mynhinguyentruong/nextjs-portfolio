@@ -29,12 +29,12 @@ const computedFields = {
       dateModified: doc.publishedAt,
       description: doc.summary,
       image: doc.image
-        ? `https://leerob.io${doc.image}`
-        : `https://leerob.io/api/og?title=${doc.title}`,
-      url: `https://leerob.io/blog/${doc._raw.flattenedPath}`,
+        ? `https://nextjs-portfolio-ymihn-nhi.vercel.app/${doc.image}`
+        : `https://nextjs-portfolio-ymihn-nhi.vercel.app/api/og?title=${doc.title}`,
+      url: `https://nextjs-portfolio-ymihn-nhi.vercel.app/blog/${doc._raw.flattenedPath}`,
       author: {
         '@type': 'Person',
-        name: 'Lee Robinson',
+        name: 'Nhi Nguyen',
       },
     }),
   },
