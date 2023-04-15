@@ -5,7 +5,6 @@
     "build": "npm run setup && next build",
     "build-only": "next build",
     "start": "next start",
-    "setup": "node ./lib/setup.mjs"
   },
   "dependencies": {
     "@octokit/rest": "^19.0.7",
