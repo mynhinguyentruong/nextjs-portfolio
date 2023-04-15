@@ -73,7 +73,7 @@ export default async function HomePage() {
             className="flex items-center hover:text-neutral-700 dark:hover:text-neutral-200 transition-all"
             rel="noopener noreferrer"
             target="_blank"
-            href="https://twitter.com/leeerob"
+            href="https://twitter.com/ymihn1"
           >
             <ArrowIcon />
             <p className="h-7">follow me on twitter</p>
@@ -84,10 +84,10 @@ export default async function HomePage() {
             className="flex items-center hover:text-neutral-700 dark:hover:text-neutral-200 transition-all"
             rel="noopener noreferrer"
             target="_blank"
-            href="https://leerob.substack.com"
+            href="https://github.com/mynhinguyentruong"
           >
             <ArrowIcon />
-            <p className="h-7">get email updates</p>
+            <p className="h-7">checkout my github</p>
           </a>
         </li>
       </ul>

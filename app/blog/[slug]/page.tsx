@@ -7,6 +7,7 @@ import Balancer from 'react-wrap-balancer';
 import ViewCounter from '../view-counter';
 
 export async function generateStaticParams() {
+  console.log({allBlogs})
   return allBlogs.map((post) => ({
     slug: post.slug,
   }));
@@ -57,12 +58,10 @@ export async function generateMetadata({
 
 export default async function Blog({ params }) {
   const post = allBlogs.find((post) => post.slug === params.slug);
-
+  console.log({post})
   if (!post) {
     notFound();
   }
-
-  const tweets = await getTweets(post.tweetIds);
 
   return (
     <section>
@@ -79,7 +78,7 @@ export default async function Blog({ params }) {
         <div className="h-[0.2em] bg-neutral-50 dark:bg-neutral-800 mx-2" />
         <ViewCounter slug={post.slug} trackView />
       </div>
-      <Mdx code={post.body.code} tweets={tweets} />
+
     </section>
   );
 }
