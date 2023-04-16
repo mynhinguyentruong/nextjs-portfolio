@@ -20,7 +20,7 @@ export default function AboutPage() {
             </p>
             <div className="prose prose-neutral dark:prose-invert text-neutral-800 dark:text-neutral-200">
                 <p>
-                    I'm currently building a tool that will help International Students that just came to Canada to find a part-time job that can provide them with financial support..
+                    I'm currently building <b>a tool</b> that will help <b>International Students</b> that just came to <b>Canada</b> to find a <b>part-time job</b> that can provide them with <b>financial support.</b>
                 </p>
                 <hr />
                 <p>
