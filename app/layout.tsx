@@ -21,11 +21,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Nhi Nguyen',
     description: 'Developer, writer, and creator.',
-    url: 'https://leerob.io',
+    url: 'https://nextjs-portfolio-nhi-ymihn.vercel.app/',
     siteName: 'Nhi Nguyen',
     images: [
       {
-        url: 'https://leerob.io/og.jpg',
+        url: 'https://nextjs-portfolio-nhi-ymihn.vercel.app/favicon-32x32.png',
         width: 1920,
         height: 1080,
       },
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: 'Lee Robinson',
+    title: 'Nhi Nguyen',
     card: 'summary_large_image',
   },
   icons: {
