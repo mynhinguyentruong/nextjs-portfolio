@@ -24,12 +24,9 @@ export default function ViewCounter({
   trackView: boolean;
 }) {
   const { data } = useSWR<PostView[]>('/api/views', fetcher);
-  console.log("In view-counter.tsx")
-  console.log({data})
-  console.log({data})
 
-  const viewsForSlug = data && data.find((view) => view.slug === slug);
-  const views = new Number(viewsForSlug?.count || 0);
+  const viewsForSlug = data && data.filter((view) => view.slug === slug).reduce((acc, val) => acc + val.count, 0);
+  const views = new Number(viewsForSlug ?? 0);
 
   useEffect(() => {
     const registerView = () =>

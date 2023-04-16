@@ -57,8 +57,7 @@ export async function generateMetadata({
 
 export default async function Blog({ params }) {
   const post = allBlogs.find((post) => post.slug === params.slug);
-  console.log("find the right blog in /blog/[slug]")
-  console.log({post})
+
   if (!post) {
     notFound();
   }
