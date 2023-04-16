@@ -20,9 +20,7 @@ export default function AboutPage() {
             </p>
             <div className="prose prose-neutral dark:prose-invert text-neutral-800 dark:text-neutral-200">
                 <p>
-                    I'm currently the <b>VP of Developer Experience at Vercel</b>, where I
-                    lead our Developer Relations and Documentation teams. I focus on{' '}
-                    <b>educating and growing</b> the Vercel and Next.js communities.
+                    I'm currently building a tool that will help International Students that just came to Canada to find a part-time job that can provide them with financial support..
                 </p>
                 <hr />
                 <p>
