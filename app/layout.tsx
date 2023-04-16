@@ -49,6 +49,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
   },
   icons: {
+    icon: '/favicon-32x32.png',
     shortcut: '/favicon.ico',
   },
   verification: {
