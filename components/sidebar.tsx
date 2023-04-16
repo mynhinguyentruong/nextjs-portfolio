@@ -25,12 +25,37 @@ function Logo() {
     <Link aria-label="Nhi Nguyen" href="/">
 
       {/* To be implemented for the svg */}
+      <motion.svg fill="#000000" className="text-black dark:text-white h-[25px] md:h-[37px]" height="30px" width="40px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.631 23.631">
+        <motion.g >
+          <motion.polygon  initial={{ pathLength: 0 }}
+                           animate={{ pathLength: 1 }}
+                           transition={{
+                             duration: 2,
+                             repeat: Infinity,
+                             repeatType: "loop",
+                             repeatDelay: 2
+                           }}
+                           points="0,0.663 9.401,0.663 15.882,7.146 15.882,14.127 5.307,3.608 5.274,22.969 0,22.969"
 
+                           strokeLinecap="round"
+                           strokeLinejoin="round"
+          >
+          </motion.polygon>
+          <motion.polygon  initial={{ pathLength: 0 }}
+                           animate={{ pathLength: 1 }}
+                           transition={{
+                             duration: 2,
+                             repeat: Infinity,
+                             repeatType: "loop",
+                             repeatDelay: 2
+                           }} points="23.631,22.969 14.232,22.969 7.752,16.485 7.752,9.501 18.327,20.018 18.359,0.662 23.631,0.662"></motion.polygon>
+        </motion.g>
+      </motion.svg>
       {/*<motion.svg*/}
       {/*  className="text-black dark:text-white h-[25px] md:h-[37px]"*/}
       {/*  width="25"*/}
       {/*  height="37"*/}
-      {/*  viewBox="0 0 232 316"*/}
+      {/*  viewBox="0 0 23.631 23.631"*/}
       {/*  fill="none"*/}
       {/*  xmlns="http://www.w3.org/2000/svg"*/}
       {/*>*/}
