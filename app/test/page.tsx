@@ -4,15 +4,8 @@ import ReviewSkeleton from "../../components/review-skeleton";
 import {Suspense} from "react";
 import Review from "../../components/review";
 
-type Params = {
-    params: {
-        categorySlug: string
-    },
-    key: 'value'
-}
-
 // With server component
-export default async function Page({ params }: Params) {
+export default async function Page() {
 
     // await, fetch the data inside the component
 
