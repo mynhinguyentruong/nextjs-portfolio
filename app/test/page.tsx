@@ -1,5 +1,6 @@
 // Test Next.js Loading UI
 import Loading from "./loading";
+import ReviewSkeleton from "../../components/review-skeleton";
 
 type Params = {
     params: {
@@ -17,6 +18,7 @@ export default async function Page({ params }: Params) {
         <>
             <h1>Some dynamic data</h1>
             <Loading />
+            <ReviewSkeleton />
         </>
 
     )
