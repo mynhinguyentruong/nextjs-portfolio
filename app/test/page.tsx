@@ -1,8 +1,15 @@
 // Test Next.js Loading UI
 import Loading from "./loading";
 
+type Params = {
+    params: {
+        categorySlug: string
+    },
+    key: 'value'
+}
+
 // With server component
-export default async function Page() {
+export default async function Page({ params }: Params) {
 
     // await, fetch the data inside the component
 
