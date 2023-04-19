@@ -16,6 +16,7 @@ export default function ReviewSkeleton() {
 
     return (
         <div className="space-y-6 p-3">
+            <h1 className='text-gray-500 pt-10'>Loading...</h1>
             <div className={`h-7 w-2/5 rounded-lg bg-gray-300 ${shimmer}`} />
 
             <div className="space-y-8">
