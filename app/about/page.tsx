@@ -24,7 +24,7 @@ export default function AboutPage() {
                 </p>
                 <hr />
                 <p>
-                    I like to try out different technology and build cool stuffs from it. I usually ask WTF is this bug and try all possible way to smash it. Currently learning Rust and Elixir at the same time because <b>concurrency and parallelism</b> are intriguing <b>A LOT.</b>
+                    I like to try out different technology and build cool stuffs from it. I usually ask WTF is this bug and try all possible way to smash it. Currently learning Rust and Elixir at the same time because <b>concurrency and parallelism</b> are intriguing me <b>A LOT.</b>
                 </p>
                 <p>
                     I <b>love</b> building for the web. The web
