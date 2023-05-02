@@ -8,15 +8,15 @@ import Review from "../../components/review";
 export default async function Page() {
 
     // await, fetch the data inside the component
-
-    // @ts-ignore
     return (
         <>
             <h1>Some dynamic data</h1>
+            {/* @ts-expect-error Async Server Component */}
             <Loading />
             {/*<ReviewSkeleton />*/}
             <Suspense fallback={<ReviewSkeleton/>}>
                 <Review
+                    {/* @ts-expect-error Async Server Component */}
                     data={fetch(
                         // We intentionally delay the reponse to simulate a slow data
                         // request that would benefit from streaming
