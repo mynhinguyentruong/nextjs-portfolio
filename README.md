@@ -32,3 +32,6 @@ pnpm dev
 
 Create a `.env` file similar to [`.env.example`](https://github.com/mynhinguyentruong/nextjs-portfolio/blob/main/.env.example).
 
+## Cloning / Forking
+
+...
