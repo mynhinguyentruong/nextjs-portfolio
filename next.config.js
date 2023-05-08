@@ -30,6 +30,7 @@ const nextConfig = {
         source: '/(.*)',
         headers: securityHeaders,
       },
+
     ];
   },
 };
@@ -43,6 +44,7 @@ const ContentSecurityPolicy = `
     media-src 'none';
     connect-src *;
     font-src 'self';
+    frame-ancestors https://drive.google.com/file/d/1lWCRuCdZ2ktFOVuQZWryFa-KqRL8GHKB/preview;
 `;
 
 const securityHeaders = [
@@ -59,7 +61,7 @@ const securityHeaders = [
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
   {
     key: 'X-Frame-Options',
-    value: 'DENY',
+    value: 'SAMEORIGIN',
   },
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
   {
