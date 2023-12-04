@@ -1,0 +1,144 @@
+---
+title: 'Implement ed25519 signing to client application and server'
+publishedAt: '2023-12-04'
+summary: 'Using public key cryptography to enhance application security'
+---
+
+Have you ever wondered what's the "real deal" of "blockchain technology". This article will help clarify how blockchain technology is implemented in normal application, server and how it improves security.
+
+## Motivation 
+I need A WAY so that my client app (Next.js) can communicate and verify its identity with my backend server (written in Go)
+
+**Questions:** 
+
+	Why didn't you use JWT Signing but chose ed25519 signing?
+
+~~I just want to be a moron that do something differently.~~
+
+Jk ... or am I 🌝
+
+But needless to say, crypto signing technology has been incrementally adopted by big companies: [Google](https://developers.google.com/identity/passkeys), [Apple](https://developer.apple.com/passkeys/),... [Passkey](https://passkeys.dev/) is an example of what using public key cryptography.
+
+Public key cryptography uses the concept of a keypair; a private key that is stored securely, and a public key that can be shared with the server. These "keys" are long, random numbers that have a mathematical relationship with each other.
+
+I won't dive deep into what ed25519 is, checkout the protocol in [RFC8032](https://datatracker.ietf.org/doc/html/rfc8032)
+
+## How it works
+At the time of the request sent, the client app will use a private key to sign a message i.e "the data" and the backend server will use a public key to decrypt and verify that the incoming request is coming from who they claim to be.
+
+### Steps I took
+	Research, try, implement, test
+	Rinse and repeat
+
+### Problems I ran into
+	ahh this failed! sucked! it did not apply the same protocol.
+
+I ran into couple problems in trying to use the NodeJS Standard Crypto library.  It is flagged in the document that Ed25519 keypairs is in experimental. And the private key resulted in a 48 bytes which is completely different from what I read on standard RFC8032 paper about private and public key being 32 bytes.
+
+```js
+// Failed code
+const crypto = require('crypto');
+
+const { publicKey, privateKey } = crypto.generateKeyPairSync('ed25519');
+
+const message = 'Hello world!';
+console.log(message);
+
+const signature = crypto.sign(null, Buffer.from(message), privateKey);
+console.log(signature);
+
+const verified = crypto.verify(null, Buffer.from(message), publicKey, signature)
+console.log('Match:', verified);
+```
+### So...
+So I need to figure out a different way. What kind of library that implements ed25519 unified protocol (RFC8032) that it is safe to use ?
+
+### After 3 cups of espresso...
+3 cups in and hours have passed, I found some open source libraries assisting in creating keypair, signing and verification, but they were individual libraries, hence inevitable risks associate with it (security risks, maintenance risks, etc...)
+
+I eventually landed on OpenSSL ed25519. Why didn't I think of it!!!
+
+Now that we know openssl give us what we want. We need to create keypair by using command:
+### Generating SSH Keys (on Unix and Mac OS X)
+
+You can generate keys with the '**ssh-keygen**' command:
+
+```bash
+$ ssh-keygen -t ed25519 -f $HOME/[path_to_current_directory]/id_ed25519
+Generating public/private ed25519 key pair.
+
+Enter passphrase (empty for no passphrase):  
+Enter same passphrase again:  
+Your identification has been saved in $HOME/[path_to_current_directory]/id_ed25519.
+Your public key has been saved in $HOME/[path_to_current_directory]/id_ed25519.pub
+```
+
+Make sure 2 files (id_ed25519, id_ed25519.pub) were created under your current working directory
+
+Now we need to load the private key and sign some data, for that we need to install `sshpk` library
+
+```bash
+npm install sshpk
+```
+
+
+```js
+/* Read in an OpenSSH/PEM *private* key */
+const keyPriv = fs.readFileSync('id_ed25519');
+const key = sshpk.parsePrivateKey(keyPriv, 'pem');
+
+// provide a message to be signed
+const data = 'some data';
+
+/* Sign some data with the key */
+let s = key.createSign('sha512');
+s.update(data);
+const signature = s.sign();
+console.log({signature})
+
+// get signature part and encode to base64 string
+const base64String = signature.part.sig.data.toString("base64");
+console.log({base64String})
+```
+
+Awesome! Now we have a base64 encoded string that we can send it to the server.
+
+Since in Go, crypto signing library is stabilized and follows RFC8032 standard, we can easily apply these same methods using standard library, check out main.go for full code of server.
+
+Here is a snippet of code that checking if the signature is valid:
+
+```go
+if isLegit := verifySignatureComingFromMagiclip(signature, message, ed25519Pubkey); isLegit {
+	c.JSON(http.StatusOK, gin.H{
+        "message": "pong",
+    })
+
+    return 
+} 
+    
+    c.JSON(http.StatusUnauthorized, gin.H{
+        "message": "You're not from Magiclip, you're a scammer!",
+    })
+```
+
+
+Checkout the full [github repository](github.com), clone it and test it out!
+
+## Some pros tip
+- Don't expose your private key, save it as environment variable. (I'm exposing them here just to show you how it works)
+- If you seriously want to implement this in your server, save the `id_ed25519` file into your environment variable or `.env` as:
+```js
+PEMSTRING="-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACCy+6sL7di1OFo/bvc1E9SxifllEFHG/Mmk5MktQidYgAAAAKh6eyERensh\nEQAAAAtzc2gtZWQyNTUxOQAAACCy+6sL7di1OFo/bvc1E9SxifllEFHG/Mmk5MktQidYgA\nAAAECatz/nLLmyJRN1Rk7ZZ4fbN8QqoBkrpuJvKPIBxBYpS7L7qwvt2LU4Wj9u9zUT1LGJ\n+WUQUcb8yaTkyS1CJ1iAAAAAJGhpZ2hmdW5jdGlvbmluZ19zb2Npb3BhdGhoaEBOaGlzLU\n1CUAE=\n-----END OPENSSH PRIVATE KEY-----"
+```
+## Over to you
+	What can we do more to improve security? 
+		- Random message generating at the time of sending request?
+		- Define payload, metadata and sign at the time of sending request? 
+
+## Further Reading
+[Passkey.dev](https://passkeys.dev)
+[Google passkey](https://developers.google.com/identity/passkeys)
+[Apple passkey](https://developer.apple.com/passkeys/)
+[Webauthn.io](https://webauthn.io/)
+[ed25519 Openssl](https://www.openssl.org/docs/man1.1.1/man7/Ed25519.html)
+
