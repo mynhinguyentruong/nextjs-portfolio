@@ -7,21 +7,21 @@ summary: 'Using public key cryptography to enhance application security'
 Have you ever wondered what's the "real deal" of "blockchain technology". This article will help clarify how blockchain technology is implemented in normal application, server and how it improves security.
 
 ## Motivation 
-I need A WAY so that my client app (Next.js) can communicate and verify its identity with my backend server (written in Go)
+I needed A WAY for my client app built on Next.js can communicate and verify its identity with my backend server (written in Go) securely.
 
-**Questions:** 
+**Some Important Questions:** 
 
-	Why didn't you use JWT Signing but chose ed25519 signing?
+	> Why didn't you use JWT Signing? But instead chose ed25519 signing?
+ 
+~~I just want to be a moron that did something differently.~~
 
-~~I just want to be a moron that do something differently.~~
+Joking ... or am I 🌝
 
-Jk ... or am I 🌝
-
-But needless to say, crypto signing technology has been incrementally adopted by big companies: [Google](https://developers.google.com/identity/passkeys), [Apple](https://developer.apple.com/passkeys/),... [Passkey](https://passkeys.dev/) is an example of what using public key cryptography.
+But needless to say, crypto signing technology has been incrementally adopted by big companies: [Google](https://developers.google.com/identity/passkeys) and [Apple](https://developer.apple.com/passkeys/). [Passkey](https://passkeys.dev/) would be a prime example of technology using public key cryptography.
 
 Public key cryptography uses the concept of a keypair; a private key that is stored securely, and a public key that can be shared with the server. These "keys" are long, random numbers that have a mathematical relationship with each other.
 
-I won't dive deep into what ed25519 is, checkout the protocol in [RFC8032](https://datatracker.ietf.org/doc/html/rfc8032)
+I won't dive deep into what ed25519 is, but if you are interested, checkout the protocol in [RFC8032](https://datatracker.ietf.org/doc/html/rfc8032)
 
 ## How it works
 At the time of the request sent, the client app will use a private key to sign a message i.e "the data" and the backend server will use a public key to decrypt and verify that the incoming request is coming from who they claim to be.
@@ -31,7 +31,7 @@ At the time of the request sent, the client app will use a private key to sign a
 	Rinse and repeat
 
 ### Problems I ran into
-	ahh this failed! sucked! it did not apply the same protocol.
+ >	"ahh this failed! sucked! it did not apply the same protocol."
 
 I ran into couple problems in trying to use the NodeJS Standard Crypto library.  It is flagged in the document that Ed25519 keypairs is in experimental. And the private key resulted in a 48 bytes which is completely different from what I read on standard RFC8032 paper about private and public key being 32 bytes.
 
@@ -51,14 +51,14 @@ const verified = crypto.verify(null, Buffer.from(message), publicKey, signature)
 console.log('Match:', verified);
 ```
 ### So...
-So I need to figure out a different way. What kind of library that implements ed25519 unified protocol (RFC8032) that it is safe to use ?
+So I needed to figure out a different method of implementation. I needed to find a library that was safe to use and properly implemented the ed25519 unified protocol (RFC8032). 
 
 ### After 3 cups of espresso...
-3 cups in and hours have passed, I found some open source libraries assisting in creating keypair, signing and verification, but they were individual libraries, hence inevitable risks associate with it (security risks, maintenance risks, etc...)
+3 cups in and hours have passed. I found some open source libraries assisting in creating keypair, signing and verification, but they were individual libraries, hence inevitable risks were associated with it (security risks, maintenance risks, etc...).
 
 I eventually landed on OpenSSL ed25519. Why didn't I think of it!!!
 
-Now that we know openssl give us what we want. We need to create keypair by using command:
+Now that we know openssl gives us what we want. We need to create keypair by using command:
 ### Generating SSH Keys (on Unix and Mac OS X)
 
 You can generate keys with the '**ssh-keygen**' command:
@@ -73,9 +73,9 @@ Your identification has been saved in $HOME/[path_to_current_directory]/id_ed255
 Your public key has been saved in $HOME/[path_to_current_directory]/id_ed25519.pub
 ```
 
-Make sure 2 files (id_ed25519, id_ed25519.pub) were created under your current working directory
+Make sure 2 files (id_ed25519, id_ed25519.pub) are created under your current working directory
 
-Now we need to load the private key and sign some data, for that we need to install `sshpk` library
+Now we need to load the private key and sign some data, for that we need to install the `sshpk` library
 
 ```bash
 npm install sshpk
@@ -103,9 +103,10 @@ console.log({base64String})
 
 Awesome! Now we have a base64 encoded string that we can send it to the server.
 
-Since in Go, crypto signing library is stabilized and follows RFC8032 standard, we can easily apply these same methods using standard library, check out main.go for full code of server.
+In Go, the crypto signing library is stabilized and follows the RFC8032 standard. We can easily apply the same methods using the Go standard library. Check out [main.go](https://github.com/mynhinguyentruong/ed25519-crypto-signing/blob/main/main.go) for full code of the server.
 
-Here is a snippet of code that checking if the signature is valid:
+Here is a snippet of code that checks if the signature is valid:
+
 
 ```go
 if isLegit := verifySignatureComingFromMagiclip(signature, message, ed25519Pubkey); isLegit {
@@ -124,16 +125,18 @@ if isLegit := verifySignatureComingFromMagiclip(signature, message, ed25519Pubke
 
 Checkout the full [github repository](https://github.com/mynhinguyentruong/ed25519-crypto-signing/blob/main/main.go), clone it and test it out!
 
-## Some pros tip
-- Don't expose your private key, save it as environment variable. (I'm exposing them here just to show you how it works)
+## Some pro tips
+- Don't expose your private key, save it as an environment variable. (I'm exposing them here just to show you how it works)
 - If you seriously want to implement this in your server, save the `id_ed25519` file into your environment variable or `.env` as:
+
 ```js
 PEMSTRING="-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACCy+6sL7di1OFo/bvc1E9SxifllEFHG/Mmk5MktQidYgAAAAKh6eyERensh\nEQAAAAtzc2gtZWQyNTUxOQAAACCy+6sL7di1OFo/bvc1E9SxifllEFHG/Mmk5MktQidYgA\nAAAECatz/nLLmyJRN1Rk7ZZ4fbN8QqoBkrpuJvKPIBxBYpS7L7qwvt2LU4Wj9u9zUT1LGJ\n+WUQUcb8yaTkyS1CJ1iAAAAAJGhpZ2hmdW5jdGlvbmluZ19zb2Npb3BhdGhoaEBOaGlzLU\n1CUAE=\n-----END OPENSSH PRIVATE KEY-----"
 ```
 ## Over to you
-	What can we do more to improve security? 
-		- Random message generating at the time of sending request?
-		- Define payload, metadata and sign at the time of sending request? 
+ >	What can we do more to improve security? 
+  - Random message generation at the time of sending a request?
+  - Define payload, metadata and sign at the time of sending a request?
+
 
 ## Further Reading
 [Passkey.dev](https://passkeys.dev)
